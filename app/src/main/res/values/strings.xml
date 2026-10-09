@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FirstApp</string>
+    <string name="product_tile">Nike Air Jordon</string>
+    <string name="view_all">View All</string>
+    <string name="cateogries">Categories</string>
+    <string name="most_purshable">Most Purchasable</string>
+    <string name="generic_error_message">Something Went wrong</string>
+    <string name="try_again">Try Again</string>
+</resources>
