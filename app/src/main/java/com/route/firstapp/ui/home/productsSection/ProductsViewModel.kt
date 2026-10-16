@@ -1,6 +1,7 @@
 package com.route.firstapp.ui.home.productsSection
 
 import androidx.lifecycle.viewModelScope
+import com.route.domain.data.ProductsSort
 import com.route.domain.data.Resource
 import com.route.domain.usecase.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,15 +28,19 @@ class ProductsViewModel @Inject constructor(
         get() = _states.asStateFlow()
 
     override fun doIntent(intent: ProductsSectionContract.Intent) {
+        when (intent) {
+            is ProductsSectionContract.Intent.Init -> loadProducts(
+                sort = intent.sort,
+            )
+        }
 
     }
-    init {
-        loadProducts()
-    }
 
-    private fun loadProducts(){
+    private fun loadProducts(
+        sort: ProductsSort
+    ){
         viewModelScope.launch {
-            getProductsUseCase.getMostSellingProducts()
+            getProductsUseCase.getSortedProducts(sort = sort)
                 .collect { resource ->
                     when (resource) {
                         is Resource.Error -> {

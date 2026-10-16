@@ -1,6 +1,7 @@
 package com.route.firstapp.ui.home.productsSection
 
 import com.route.domain.data.Product
+import com.route.domain.data.ProductsSort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -22,6 +23,7 @@ interface ProductsSectionContract {
         data object Loading: State()
     }
     sealed class Intent{
+        data class Init(val sort: ProductsSort): Intent()
 
     }
     sealed class Event{

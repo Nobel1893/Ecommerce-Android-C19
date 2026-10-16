@@ -19,21 +19,16 @@ class ApiModule {
 
     @Provides
     @Singleton
-    @LoggingInterceptor
-    fun provideOkHttpLoggingInterceptor(): Interceptor{
-        return HttpLoggingInterceptor(
-            object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Log.d("RetroFit",message)
-                }
-            }
-        )
+    fun provideOkHttpLoggingInterceptor(): HttpLoggingInterceptor{
+        val interceptor =  HttpLoggingInterceptor { message -> Log.e("RetroFit", message) }
+        interceptor.setLevel(level = HttpLoggingInterceptor.Level.BODY)
+        return interceptor
     }
 
     @Provides
     @Singleton
     fun provideOkHttp(
-        @LoggingInterceptor loggingInterceptor: Interceptor
+         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient{
         val okhttp = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
