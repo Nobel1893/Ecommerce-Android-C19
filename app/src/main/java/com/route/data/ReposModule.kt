@@ -1,7 +1,9 @@
 package com.route.data
 
 import com.route.data.repos.CategoriesRepoImpl
+import com.route.data.repos.ProductsRepoImpl
 import com.route.domain.repo.CategoriesRepo
+import com.route.domain.repo.ProductsRepo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,9 @@ abstract class ReposModule {
     abstract fun provideCategoriesRepo(
         repo: CategoriesRepoImpl
     ): CategoriesRepo
+
+    @Binds
+    abstract fun provideProductsRepo(
+        repo: ProductsRepoImpl
+    ): ProductsRepo
 }

@@ -31,12 +31,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.route.domain.data.Product
 import com.route.firstapp.R
 import com.route.firstapp.ui.theme.MyPreview
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProductCard(){
+fun ProductCard(product: Product){
     Box(
         modifier = Modifier
             .widthIn(max = 190.dp)
@@ -51,20 +55,18 @@ fun ProductCard(){
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Image(
+            GlideImage(
                 modifier = Modifier
                     .width(IntrinsicSize.Max)
                     .padding()
                     .height(128.dp)
                 ,
+                model = product.imageUrl,
                 contentScale = ContentScale.Crop,
-                painter = painterResource(
-                    R.drawable.product_image
-                ),
                 contentDescription = "product_image"
             )
             Text(
-                stringResource(R.string.product_tile),
+                product.name ?: "",
                 style = MaterialTheme.typography.bodyMedium
             )
             Row(
@@ -113,6 +115,10 @@ fun ProductCard(){
 @Preview (uiMode = UI_MODE_NIGHT_NO, device = Devices.PIXEL)
 private fun productPreview(){
     MyPreview {
-        ProductCard()
+        ProductCard(
+            product = Product("123",
+                name = "Pepsi",
+                imageUrl = "234")
+        )
     }
 }

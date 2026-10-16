@@ -33,7 +33,7 @@ import com.route.firstapp.ui.theme.BrandColor
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun HomeCategoriesSuccess(categories:List<Category> ,
+fun HomeCategoriesSuccess(categories:List<Category?> ,
                           modifier: Modifier = Modifier) {
     LazyHorizontalGrid (
         modifier = Modifier.height(272.dp),
@@ -50,14 +50,14 @@ fun HomeCategoriesSuccess(categories:List<Category> ,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 GlideImage(
-                    model = cat.imageUrl,
+                    model = cat?.imageUrl,
                     contentDescription = "Category image",
                     modifier = Modifier.size(100.dp)
                         .clip(CircleShape),
                     contentScale = ContentScale.FillBounds,
                 )
                 Text(
-                    cat.name ?: "",
+                    cat?.name ?: "",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = BrandColor,
                     )

@@ -55,17 +55,3 @@ private fun HomeSectionTitlePreview(){
         )
     }
 }
-
-
-@Composable
-fun HorizontalProductCardRow(modifier: Modifier = Modifier, size: Int) {
-    HomeSectionTitle(
-        modifier = modifier.fillMaxWidth(),
-        title = stringResource(R.string.most_purshable)
-    )
-    LazyRow(modifier = modifier,) {
-        items(size){
-            ProductCard()
-        }
-    }
-}

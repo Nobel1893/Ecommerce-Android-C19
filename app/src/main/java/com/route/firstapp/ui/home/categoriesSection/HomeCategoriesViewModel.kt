@@ -1,8 +1,10 @@
 package com.route.firstapp.ui.home.categoriesSection
 
 import androidx.lifecycle.viewModelScope
+import com.route.domain.data.Resource
 import com.route.domain.usecase.GetCategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,28 +43,36 @@ class HomeCategoriesViewModel @Inject constructor(
         getCategories()
     }
     private fun getCategories(){
-        _events.trySend(
-            HomeCategoriesContract.CategoriesEvent.ShowToast("Started Loading")
-        )
         viewModelScope.launch {
-            try {
-                val categories = getCategoriesUseCase.getCategories()
-                _states.value = HomeCategoriesContract.CategoriesState.CategoriesSuccessState(
-                    categories
-                )
-                _events.trySend(
-                    HomeCategoriesContract.CategoriesEvent.ShowToast("Categories Emitted")
-                )
+            getCategoriesUseCase.getCategories()
+                .collect { resource ->
+                    when (resource) {
+                        is Resource.Error ->{
+                            _events.trySend(
+                                HomeCategoriesContract.CategoriesEvent.ShowToast("Categories Error")
+                            )
 
-            }catch (e: Throwable){
-                _events.trySend(
-                    HomeCategoriesContract.CategoriesEvent.ShowToast("Categories Error")
-                )
-
-                _states.value = HomeCategoriesContract.CategoriesState.CategoriesErrorState(
-                    "Something Went Wrong"
-                )
-            }
+                            _states.value = HomeCategoriesContract.CategoriesState.CategoriesErrorState(
+                                "Something Went Wrong"
+                            )
+                        }
+                        is Resource.Loading -> {
+                            _events.trySend(
+                                HomeCategoriesContract.CategoriesEvent.ShowToast("Started Loading")
+                            )
+                        }
+                        is Resource.Success -> {
+                            _states.value = HomeCategoriesContract.CategoriesState.CategoriesSuccessState(
+                                resource.data ?: listOf()
+                            )
+                            _events.trySend(
+                                HomeCategoriesContract.CategoriesEvent.ShowToast("Categories Emitted")
+                            )
+                        }
+                    }
+                }
         }
+
+
     }
 }

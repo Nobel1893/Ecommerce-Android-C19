@@ -11,12 +11,14 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.route.firstapp.R
 import com.route.firstapp.ui.home.HomeSectionTitle
+import kotlinx.coroutines.Dispatchers
 
 
 @Composable
 fun HomeCategoriesSection(modifier: Modifier = Modifier,
                           viewModel: HomeCategoriesContract.ViewModel = hiltViewModel<HomeCategoriesViewModel>()
                           ) {
+    Dispatchers.Default
     val context = LocalContext.current
 
     val states = viewModel.states.collectAsStateWithLifecycle()

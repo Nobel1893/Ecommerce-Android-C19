@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.route.firstapp.R
 import com.route.firstapp.ui.home.categoriesSection.HomeCategoriesSection
+import com.route.firstapp.ui.home.productsSection.HorizontalProductCardRow
 import com.route.firstapp.ui.theme.BrandColor
 import com.route.firstapp.ui.theme.MyPreview
 
@@ -74,7 +75,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
             HomeCategoriesSection()
 
-            HorizontalProductCardRow(size = 20)
+            HorizontalProductCardRow()
         }
     }
 }

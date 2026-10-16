@@ -1,9 +1,12 @@
 package com.route.api
 
 import com.route.api.dataSource.CategoriesOnlineDataSourceImpl
+import com.route.api.dataSource.ProductsOnlineDataSourceImpl
 import com.route.data.dataSource.CategoriesOnlineDataSource
+import com.route.data.dataSource.ProductsOnlineDataSource
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
@@ -16,4 +19,22 @@ abstract class DataSourcesModule {
         dataSource : CategoriesOnlineDataSourceImpl
     ): CategoriesOnlineDataSource
 
+    @Binds
+    abstract fun provideProductsDataSource(
+        dataSource : ProductsOnlineDataSourceImpl
+    ): ProductsOnlineDataSource
 }
+
+//@Module
+//object DataSourcesModule{
+//
+//    @Provides
+//    fun provideProductsOnLineDataSource(
+//        apiServices: ApiServices
+//    ): ProductsOnlineDataSource{
+//        return ProductsOnlineDataSourceImpl(
+//            apiServices
+//        )
+//    }
+//
+//}

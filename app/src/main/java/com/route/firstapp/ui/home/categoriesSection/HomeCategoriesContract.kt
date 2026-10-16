@@ -17,7 +17,7 @@ abstract class HomeCategoriesContract{
     // deep copy VS shallow copy
     sealed class CategoriesState{
         data class CategoriesSuccessState(
-            val categories : List<Category>
+            val categories : List<Category?>
         ): CategoriesState()
 
         data class CategoriesErrorState(

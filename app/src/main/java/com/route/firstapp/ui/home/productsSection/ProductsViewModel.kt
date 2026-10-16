@@ -1,0 +1,61 @@
+package com.route.firstapp.ui.home.productsSection
+
+import androidx.lifecycle.viewModelScope
+import com.route.domain.data.Resource
+import com.route.domain.usecase.GetProductsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ProductsViewModel @Inject constructor(
+    val getProductsUseCase : GetProductsUseCase,
+) : ProductsSectionContract.ViewModel(){
+
+    private val _events = Channel<ProductsSectionContract.Event>(Channel.BUFFERED)
+    override val events: Flow<ProductsSectionContract.Event>
+        get() = _events.receiveAsFlow()
+
+    private val _states = MutableStateFlow<ProductsSectionContract.State>(ProductsSectionContract.State.Loading)
+    override val states: StateFlow<ProductsSectionContract.State>
+        get() = _states.asStateFlow()
+
+    override fun doIntent(intent: ProductsSectionContract.Intent) {
+
+    }
+    init {
+        loadProducts()
+    }
+
+    private fun loadProducts(){
+        viewModelScope.launch {
+            getProductsUseCase.getMostSellingProducts()
+                .collect { resource ->
+                    when (resource) {
+                        is Resource.Error -> {
+                            _states.emit(ProductsSectionContract.State.Error("" +
+                                    "Something Went Wrong"))
+                        }
+                        is Resource.Loading -> {
+                            _states.emit(
+                                ProductsSectionContract.State.Loading
+                            )
+                        }
+                        is Resource.Success -> {
+                            _states.emit(
+                                ProductsSectionContract.State.Success(
+                                    products = resource.data ?: listOf()
+                                )
+                            )
+                        }
+                    }
+                }
+        }
+    }
+}
