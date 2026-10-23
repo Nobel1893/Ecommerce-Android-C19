@@ -6,6 +6,7 @@ import com.route.api.data.ProductDto
 import com.route.api.data.ProductsSortTypeDto
 import com.route.api.data.SubCategoryDto
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiServices {
@@ -24,5 +25,17 @@ interface ApiServices {
     suspend fun getProducts(
         @Query("sort") sort: ProductsSortTypeDto,
     ): BaseResponse<List<ProductDto>>
+
+    // unknown query params make the API return no products, so keep these names exact
+    @GET("v1/products")
+    suspend fun getSubCategoryProducts(
+        @Query("category") categoryId: String,
+        @Query("subcategory") subCategoryId: String,
+    ): BaseResponse<List<ProductDto>>
+
+    @GET("v1/products/{id}")
+    suspend fun getProductDetails(
+        @Path("id") productId: String,
+    ): BaseResponse<ProductDto>
 
 }

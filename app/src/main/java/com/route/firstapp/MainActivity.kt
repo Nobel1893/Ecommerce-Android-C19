@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -86,14 +87,31 @@ fun AppNavHost(modifier: Modifier = Modifier,
                 appNavController = navController,
             )
         }
-        composable<AppRoutes.ProductDetails> {
-            ProductDetailsScreen()
+        composable<AppRoutes.ProductDetails> { backStackEntry ->
+            val route = backStackEntry.toRoute<AppRoutes.ProductDetails>()
+            ProductDetailsScreen(
+                productId = route.productId,
+                onNavigateBack = {
+                    // pop only while this screen is on top: a second tap during the exit transition
+                    // would also pop the screen below. Not a RESUMED check, so a tap during the
+                    // enter transition still works.
+                    if (navController.currentBackStackEntry == backStackEntry) {
+                        navController.popBackStack()
+                    }
+                },
+            )
         }
         composable<AppRoutes.ProductsCatalog> { backStackEntry ->
             val route = backStackEntry.toRoute<AppRoutes.ProductsCatalog>()
             ProductsCatalogScreen(
                 categoryId = route.categoryId,
                 subCategoryId = route.subCategoryId,
+                onNavigate = { destination ->
+                    // a second tap during the transition would push the destination twice
+                    if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                        navController.navigate(destination)
+                    }
+                },
             )
         }
 

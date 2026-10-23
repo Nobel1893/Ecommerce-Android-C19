@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductsOnlineDataSource {
     fun getProducts(sort: ProductsSort): Flow<Resource<List<Product>?>>
+    fun getSubCategoryProducts(categoryId: String, subCategoryId: String): Flow<Resource<List<Product>?>>
+    fun getProductDetails(productId: String): Flow<Resource<Product?>>
 }
