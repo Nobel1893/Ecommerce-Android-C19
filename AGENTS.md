@@ -296,3 +296,9 @@ Don't copy these into new code. Fix them only when your task touches them.
 - After code changes, run `./gradlew :app:compileDebugKotlin` and report the result.
 - For a new feature end to end, use the `android-feature-coder` agent
   (`.claude/agents/android-feature-coder.md`). It has the step‑by‑step recipe and templates.
+- Before opening a PR, run the `android-code-reviewer` agent (`.claude/agents/android-code-reviewer.md`).
+  It's read‑only and checks the team standards: SOLID, small well‑named functions, MVI on every
+  screen, only `doIntent` public in ViewModels, mandatory DI, dispatcher/Compose performance,
+  testability, and that the feature works on the emulator. Its checklists are project skills in
+  `.claude/skills/` (`android-clean-code-review`, `android-mvi-review`, `android-performance-review`,
+  `android-feature-verification`), which any session can use too.
