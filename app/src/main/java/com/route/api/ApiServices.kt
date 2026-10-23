@@ -1,10 +1,15 @@
 package com.route.api
 
+import com.route.api.data.AuthResponseDto
 import com.route.api.data.BaseResponse
 import com.route.api.data.CategoryDto
 import com.route.api.data.ProductDto
 import com.route.api.data.ProductsSortTypeDto
+import com.route.api.data.SignInRequestDto
+import com.route.api.data.SignUpRequestDto
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiServices {
@@ -16,5 +21,16 @@ interface ApiServices {
     suspend fun getProducts(
         @Query("sort") sort: ProductsSortTypeDto,
     ): BaseResponse<List<ProductDto>>
+
+    // auth answers aren't wrapped in BaseResponse
+    @POST("v1/auth/signin")
+    suspend fun signIn(
+        @Body body: SignInRequestDto,
+    ): AuthResponseDto
+
+    @POST("v1/auth/signup")
+    suspend fun signUp(
+        @Body body: SignUpRequestDto,
+    ): AuthResponseDto
 
 }

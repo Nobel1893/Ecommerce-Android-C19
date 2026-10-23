@@ -1,54 +1,39 @@
 package com.route.firstapp
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Icon
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.route.firstapp.ui.AppRoutes
+import com.route.firstapp.ui.auth.AuthBackground
+import com.route.firstapp.ui.auth.login.LoginScreen
+import com.route.firstapp.ui.auth.register.RegisterScreen
 import com.route.firstapp.ui.home.HomeScreen
-
+import com.route.firstapp.ui.session.SessionContract
+import com.route.firstapp.ui.session.SessionViewModel
+import com.route.firstapp.ui.theme.BrandColor
 import com.route.firstapp.ui.theme.FirstAppTheme
-import com.route.firstapp.ui.theme.MyPreview
+import com.route.firstapp.ui.theme.SystemBarIconsEffect
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.max
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -56,28 +41,87 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FirstAppTheme {
-                HomeScreen()
-            }
+            RouteEcommerceApp()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun RouteEcommerceApp(sessionViewModel: SessionViewModel = hiltViewModel()){
+    LifecycleEventEffect(event = Lifecycle.Event.ON_CREATE) {
+        sessionViewModel.doIntent(SessionContract.Intent.Init)
+    }
+    val sessionState = sessionViewModel.states.collectAsStateWithLifecycle()
+    // 1. Create and remember the NavController
+    val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val isOnBrandColor = currentBackStackEntry?.destination.isDrawnOnBrandColor()
+
+    FirstAppTheme {
+        SystemBarIconsEffect(useLightIcons = isOnBrandColor)
+        // This colour also shows through the NavHost's cross-fade, so it follows the destination:
+        // BrandColor keeps Login <-> Register from flashing lighter halfway through.
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = if (isOnBrandColor) BrandColor else MaterialTheme.colorScheme.background,
+            contentColor = Color.White,
+        ) {
+            when (sessionState.value) {
+                // the saved login is read off the main thread; only the brand background shows meanwhile
+                SessionContract.State.Loading -> AuthBackground()
+                SessionContract.State.LoggedIn -> AppNavHost(
+                    navController = navController,
+                    startDestination = AppRoutes.Home
+                )
+                SessionContract.State.LoggedOut -> AppNavHost(
+                    navController = navController,
+                    startDestination = AppRoutes.Login
+                )
+            }
+        }
+    }
+
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    FirstAppTheme {
-        Greeting("Android")
+fun AppNavHost(modifier: Modifier = Modifier,
+               navController: NavHostController,
+               startDestination: AppRoutes
+               ) {
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = startDestination,
+    ) {
+        composable<AppRoutes.Login> {
+            LoginScreen(
+                onNavigate = { route -> navController.navigateFromAuth(route) }
+            )
+        }
+        composable<AppRoutes.Register> {
+            RegisterScreen(
+                onNavigate = { route -> navController.navigateFromAuth(route) }
+            )
+        }
+        composable<AppRoutes.Home> {
+            HomeScreen()
+        }
+
+    }
+
+}
+
+// Reaching Home ends the auth flow: Login and Register leave the back stack, so Back from Home exits
+private fun NavController.navigateFromAuth(route: AppRoutes) {
+    navigate(route) {
+        launchSingleTop = true
+        if (route == AppRoutes.Home) {
+            popUpTo<AppRoutes.Login> { inclusive = true }
+        }
     }
 }
 
-
-
+// null: the session is still loading and only the brand background is on screen
+private fun NavDestination?.isDrawnOnBrandColor(): Boolean {
+    return this == null || hasRoute<AppRoutes.Login>() || hasRoute<AppRoutes.Register>()
+}
