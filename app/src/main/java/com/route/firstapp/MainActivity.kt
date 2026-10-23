@@ -23,11 +23,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.route.firstapp.ui.AppRoutes
 import com.route.firstapp.ui.auth.AuthBackground
 import com.route.firstapp.ui.auth.login.LoginScreen
 import com.route.firstapp.ui.auth.register.RegisterScreen
 import com.route.firstapp.ui.home.HomeScreen
+import com.route.firstapp.ui.productDetails.ProductDetailsScreen
+import com.route.firstapp.ui.productsCatalog.ProductsCatalogScreen
 import com.route.firstapp.ui.session.SessionContract
 import com.route.firstapp.ui.session.SessionViewModel
 import com.route.firstapp.ui.theme.BrandColor
@@ -104,7 +107,19 @@ fun AppNavHost(modifier: Modifier = Modifier,
             )
         }
         composable<AppRoutes.Home> {
-            HomeScreen()
+            HomeScreen(
+                appNavController = navController,
+            )
+        }
+        composable<AppRoutes.ProductDetails> {
+            ProductDetailsScreen()
+        }
+        composable<AppRoutes.ProductsCatalog> { backStackEntry ->
+            val route = backStackEntry.toRoute<AppRoutes.ProductsCatalog>()
+            ProductsCatalogScreen(
+                categoryId = route.categoryId,
+                subCategoryId = route.subCategoryId,
+            )
         }
 
     }

@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.route.domain.data.Product
@@ -40,9 +42,13 @@ import com.route.firstapp.ui.theme.MyPreview
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProductCard(product: Product){
+fun ProductCard(product: Product,
+                onProductClick:(product: Product)-> Unit = {}){
     Box(
         modifier = Modifier
+            .clickable{
+                onProductClick(product)
+            }
             .widthIn(max = 190.dp)
             .background(
                 color = Color.White,
