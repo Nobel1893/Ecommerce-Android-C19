@@ -23,4 +23,7 @@
     <string name="total_price">السعر الإجمالي</string>
     <string name="add_to_cart">أضف إلى السلة</string>
     <string name="cart_coming_soon">الإضافة إلى السلة قريبًا</string>
+    <string name="route_logo">شعار Route</string>
+    <string name="search_hint">عن ماذا تبحث؟</string>
+    <string name="cart">السلة</string>
 </resources>
