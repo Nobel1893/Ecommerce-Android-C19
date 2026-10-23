@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
@@ -95,10 +96,13 @@ fun ProductsSuccessState(modifier: Modifier = Modifier,
     LazyRow(modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(products.size){ index->
+        items(
+            items = products,
+            key = { product -> product.id },
+        ) { product ->
             ProductCard(
                 modifier = Modifier.width(160.dp),
-                product = products[index],
+                product = product,
                 onProductClick = onProductClick,
             )
         }

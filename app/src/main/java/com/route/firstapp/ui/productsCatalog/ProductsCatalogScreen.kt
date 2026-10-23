@@ -13,10 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.route.firstapp.ui.AppRoutes
+import com.route.firstapp.ui.ErrorWithRetry
+import com.route.firstapp.ui.FullScreenLoading
 
-// Entry composable only. It has no preview because it needs a Hilt ViewModel; the header and
-// each state have their own file and previews (ProductsCatalogHeader, ProductsCatalogLoadingState,
-// ProductsCatalogErrorState, ProductsCatalogSuccessState).
+// Entry composable only. It has no preview because it needs a Hilt ViewModel; the header and the
+// success state have their own file and previews (ProductsCatalogHeader, ProductsCatalogSuccessState),
+// loading and error use the shared FullScreenLoading and ErrorWithRetry.
 @Composable
 fun ProductsCatalogScreen(modifier: Modifier = Modifier,
                           categoryId: String,
@@ -53,10 +55,10 @@ fun ProductsCatalogScreen(modifier: Modifier = Modifier,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
         )
         when (val state = states.value) {
-            ProductsCatalogContract.State.Loading -> ProductsCatalogLoadingState(
+            ProductsCatalogContract.State.Loading -> FullScreenLoading(
                 modifier = Modifier.weight(1f),
             )
-            is ProductsCatalogContract.State.Error -> ProductsCatalogErrorState(
+            is ProductsCatalogContract.State.Error -> ErrorWithRetry(
                 modifier = Modifier.padding(16.dp),
                 onRetryClick = {
                     viewModel.doIntent(

@@ -20,7 +20,7 @@ class ProductsOnlineDataSourceImpl @Inject constructor(
                 apiServices.getProducts(sort = sort.toProductsSortDto())
             },
             converter = { dtos ->
-                dtos?.map { dto -> dto.toProduct() }?:listOf()
+                dtos?.mapNotNull { dto -> dto.toProduct() }?:listOf()
             }
         )
     }
@@ -37,7 +37,7 @@ class ProductsOnlineDataSourceImpl @Inject constructor(
                 )
             },
             converter = { dtos ->
-                dtos?.map { dto -> dto.toProduct() }?:listOf()
+                dtos?.mapNotNull { dto -> dto.toProduct() }?:listOf()
             }
         )
     }
