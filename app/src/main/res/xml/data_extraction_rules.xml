@@ -5,6 +5,8 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
+        <!-- the login token (LocalModule.AUTH_PREFERENCES_FILE) must not be restored on another device -->
+        <exclude domain="sharedpref" path="auth_session.xml"/>
         <!-- TODO: Use <include> and <exclude> to control what is backed up.
         <include .../>
         <exclude .../>

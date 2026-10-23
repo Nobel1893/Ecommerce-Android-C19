@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FirstApp</string>
+
+    <!-- Auth: login and register -->
+    <string name="route_logo_description">Route</string>
+    <string name="login_title">مرحبًا بعودتك إلى Route</string>
+    <string name="login_subtitle">يُرجى تسجيل الدخول باستخدام بريدك الإلكتروني</string>
+    <string name="login_user_name_label">اسم المستخدم</string>
+    <string name="login_user_name_placeholder">أدخل اسمك</string>
+    <string name="password_label">كلمة المرور</string>
+    <string name="password_placeholder">أدخل كلمة المرور</string>
+    <string name="show_password">إظهار كلمة المرور</string>
+    <string name="hide_password">إخفاء كلمة المرور</string>
+    <string name="forgot_password">نسيت كلمة المرور</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="login_create_account_prompt">ليس لديك حساب؟ أنشئ حسابًا</string>
+    <string name="register_full_name_label">الاسم الكامل</string>
+    <string name="register_full_name_placeholder">أدخل اسمك الكامل</string>
+    <string name="register_mobile_label">رقم الهاتف المحمول</string>
+    <string name="register_mobile_placeholder">أدخل رقم هاتفك المحمول</string>
+    <string name="register_email_label">البريد الإلكتروني</string>
+    <string name="register_email_placeholder">أدخل بريدك الإلكتروني</string>
+    <string name="register_button">إنشاء حساب</string>
+    <string name="error_field_required">هذا الحقل مطلوب</string>
+    <string name="error_invalid_email">أدخل بريدًا إلكترونيًا صحيحًا</string>
+    <string name="error_invalid_mobile">أدخل رقم هاتف محمول مصريًا صحيحًا، مثل 01012345678</string>
+    <plurals name="error_password_too_short">
+        <item quantity="zero">يجب ألا تقل كلمة المرور عن %1$d حرف</item>
+        <item quantity="one">يجب ألا تقل كلمة المرور عن حرف واحد</item>
+        <item quantity="two">يجب ألا تقل كلمة المرور عن حرفين</item>
+        <item quantity="few">يجب ألا تقل كلمة المرور عن %1$d أحرف</item>
+        <item quantity="many">يجب ألا تقل كلمة المرور عن %1$d حرفًا</item>
+        <item quantity="other">يجب ألا تقل كلمة المرور عن %1$d حرف</item>
+    </plurals>
+
     <string name="view_all">View All</string>
     <string name="cateogries">Categories</string>
     <string name="most_purshable">Most Purchasable</string>

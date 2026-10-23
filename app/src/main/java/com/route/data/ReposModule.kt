@@ -1,7 +1,9 @@
 package com.route.data
 
+import com.route.data.repos.AuthRepoImpl
 import com.route.data.repos.CategoriesRepoImpl
 import com.route.data.repos.ProductsRepoImpl
+import com.route.domain.repo.AuthRepo
 import com.route.domain.repo.CategoriesRepo
 import com.route.domain.repo.ProductsRepo
 import dagger.Binds
@@ -24,4 +26,9 @@ abstract class ReposModule {
     abstract fun provideProductsRepo(
         repo: ProductsRepoImpl
     ): ProductsRepo
+
+    @Binds
+    abstract fun provideAuthRepo(
+        repo: AuthRepoImpl
+    ): AuthRepo
 }
