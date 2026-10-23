@@ -56,7 +56,9 @@ data class ProductDto(
 	@field:SerializedName("updatedAt")
 	val updatedAt: String? = null
 ){
-	fun toProduct(): Product{
+	// null when the API leaves out the id: the app can't open that product or key it in a list
+	fun toProduct(): Product?{
+		if (id == null) return null
 		return Product(
 			id = id,
 			name = title,

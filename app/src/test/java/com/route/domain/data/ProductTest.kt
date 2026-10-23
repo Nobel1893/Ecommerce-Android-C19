@@ -8,16 +8,16 @@ class ProductTest {
 
     @Test
     fun finalPrice_isDiscountedPriceWhenThereIsADiscount() {
-        assertEquals(349, Product(price = 499, priceAfterDiscount = 349).finalPrice)
+        assertEquals(349, Product(id = "1", price = 499, priceAfterDiscount = 349).finalPrice)
     }
 
     @Test
     fun finalPrice_isPriceWithoutADiscount() {
-        assertEquals(499, Product(price = 499).finalPrice)
+        assertEquals(499, Product(id = "1", price = 499).finalPrice)
     }
 
     @Test
     fun finalPrice_isNullWithoutAnyPrice() {
-        assertNull(Product().finalPrice)
+        assertNull(Product(id = "1").finalPrice)
     }
 }

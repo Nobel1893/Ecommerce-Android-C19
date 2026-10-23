@@ -117,7 +117,7 @@ com.route
     ├── MainActivity.kt       @AndroidEntryPoint, RouteEcommerceApp(), AppNavHost
     └── ui/
         ├── AppRoutes.kt      @Serializable sealed class of every navigation route
-        ├── CommonWidgets.kt  Shared composables (ProductCard)
+        ├── CommonWidgets.kt  Shared composables (ProductCard, FullScreenLoading, ErrorWithRetry)
         ├── theme/            FirstAppTheme, BrandColor, Typography, MyPreview
         ├── home/             HomeScreen, HomeNavHost, HomeTab, HomeSectionTitle
         │   ├── categoriesSection/   MVI section (older style)
@@ -185,10 +185,12 @@ Every stateful UI unit (a screen or a self‑contained section) lives in its own
 
 **When you implement a screen, put each UI state in its own file**, as in the table (see
 `ui/categories/` for a full example). Nested states
-get the same treatment: a `SubCategoriesState` gets `SubCategoriesLoadingState.kt`,
-`SubCategoriesErrorState.kt` and `SubCategoriesSuccessState.kt`. A section follows the same split
-whenever it has its own UI for a state. A state that only calls a shared composable (for example
-`HomeCategoriesLoading`) doesn't need its own file.
+get the same treatment: a `SubCategoriesState` gets `SubCategoriesLoadingState.kt` and
+`SubCategoriesSuccessState.kt`. A section follows the same split whenever it has its own UI for a
+state. A state that only calls a shared composable doesn't need its own file: for a full-screen
+spinner and an error message with a retry button, call `FullScreenLoading()` and
+`ErrorWithRetry(onRetryClick)` from `ui/CommonWidgets.kt` (as the Categories, Catalog and Details
+screens do), and `HomeCategoriesLoading` for a section spinner.
 
 Contract shape (see `ui/home/productsSection/ProductsSectionContract.kt`):
 

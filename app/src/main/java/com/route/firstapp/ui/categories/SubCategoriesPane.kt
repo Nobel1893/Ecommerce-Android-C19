@@ -17,11 +17,13 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.route.domain.data.Category
 import com.route.domain.data.SubCategory
+import com.route.firstapp.ui.ErrorWithRetry
 import com.route.firstapp.ui.theme.BrandColor
 import com.route.firstapp.ui.theme.MyPreview
 
 // Shows the selected category and picks the composable for the nested SubCategoriesState.
-// Each nested state has its own file: SubCategoriesLoadingState, SubCategoriesErrorState, SubCategoriesSuccessState.
+// The loading and success states have their own file (SubCategoriesLoadingState, SubCategoriesSuccessState),
+// the error uses the shared ErrorWithRetry.
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SubCategoriesPane(modifier: Modifier = Modifier,
@@ -53,7 +55,8 @@ fun SubCategoriesPane(modifier: Modifier = Modifier,
         }
         when (subCategoriesState) {
             CategoriesContract.SubCategoriesState.Loading -> SubCategoriesLoadingState()
-            is CategoriesContract.SubCategoriesState.Error -> SubCategoriesErrorState(
+            // retrying reloads only the selected category's children
+            is CategoriesContract.SubCategoriesState.Error -> ErrorWithRetry(
                 onRetryClick = onRetryClick,
             )
             is CategoriesContract.SubCategoriesState.Success -> SubCategoriesSuccessState(

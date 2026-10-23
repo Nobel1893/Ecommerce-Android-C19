@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -167,6 +170,38 @@ fun ProductFavoriteIcon(modifier: Modifier = Modifier) {
     }
 }
 
+// a spinner in the middle of all the space it's given, for a screen that is loading
+@Composable
+fun FullScreenLoading(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ){
+        CircularProgressIndicator()
+    }
+}
+
+// the Scaffolds set a white content color, so the text here needs an explicit color
+@Composable
+fun ErrorWithRetry(modifier: Modifier = Modifier,
+                   onRetryClick: () -> Unit,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            stringResource(R.string.generic_error_message),
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = BrandColor
+            ),
+        )
+        ElevatedButton(onClick = onRetryClick) {
+            Text(stringResource(R.string.try_again))
+        }
+    }
+}
+
 private val previewProduct = Product(
     id = "6428ebc6dc1175abc65ca0b9",
     name = "Woman Shawl",
@@ -235,6 +270,24 @@ private fun ProductFavoriteIconPreview(){
     MyPreview {
         ProductFavoriteIcon(
             modifier = Modifier.padding(8.dp),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true, heightDp = 400)
+private fun FullScreenLoadingPreview(){
+    MyPreview {
+        FullScreenLoading()
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun ErrorWithRetryPreview(){
+    MyPreview {
+        ErrorWithRetry(
+            onRetryClick = {},
         )
     }
 }

@@ -8,38 +8,47 @@ class ProductDtoTest {
 
     @Test
     fun toProduct_keepsDiscountedPrice() {
-        val product = ProductDto(price = 499, priceAfterDiscount = 349).toProduct()
+        val product = requireNotNull(ProductDto(id = "1", price = 499, priceAfterDiscount = 349).toProduct())
 
         assertEquals(349, product.priceAfterDiscount)
     }
 
     @Test
     fun toProduct_treatsZeroDiscountedPriceAsNoDiscount() {
-        val product = ProductDto(price = 8999, priceAfterDiscount = 0).toProduct()
+        val product = requireNotNull(ProductDto(id = "1", price = 8999, priceAfterDiscount = 0).toProduct())
 
         assertNull(product.priceAfterDiscount)
     }
 
     @Test
     fun toProduct_treatsMissingDiscountedPriceAsNoDiscount() {
-        val product = ProductDto(price = 149).toProduct()
+        val product = requireNotNull(ProductDto(id = "1", price = 149).toProduct())
 
         assertNull(product.priceAfterDiscount)
     }
 
     @Test
+    fun toProduct_isNullWithoutAnId() {
+        val product = ProductDto(title = "Woman Shawl", price = 499).toProduct()
+
+        assertNull(product)
+    }
+
+    @Test
     fun toProduct_mapsDetailsFields() {
-        val product = ProductDto(
-            id = "6428ebc6dc1175abc65ca0b9",
-            title = "Woman Shawl",
-            imageCover = "cover.jpeg",
-            description = "Material Polyester Blend",
-            ratingsAverage = 4.1,
-            ratingsQuantity = 47,
-            sold = 2973,
-            quantity = 220,
-            images = listOf("1.jpeg", null, "2.jpeg"),
-        ).toProduct()
+        val product = requireNotNull(
+            ProductDto(
+                id = "6428ebc6dc1175abc65ca0b9",
+                title = "Woman Shawl",
+                imageCover = "cover.jpeg",
+                description = "Material Polyester Blend",
+                ratingsAverage = 4.1,
+                ratingsQuantity = 47,
+                sold = 2973,
+                quantity = 220,
+                images = listOf("1.jpeg", null, "2.jpeg"),
+            ).toProduct()
+        )
 
         assertEquals("6428ebc6dc1175abc65ca0b9", product.id)
         assertEquals("Woman Shawl", product.name)
