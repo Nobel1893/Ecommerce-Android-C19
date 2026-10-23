@@ -5,5 +5,22 @@
     <string name="cateogries">Categories</string>
     <string name="most_purshable">Most Purchasable</string>
     <string name="generic_error_message">Something Went wrong</string>
+    <string name="try_again">حاول مرة أخرى</string>
     <string name="no_sub_categories">لا توجد أقسام فرعية بعد</string>
+    <string name="no_products">لا توجد منتجات هنا بعد</string>
+    <string name="product_details">تفاصيل المنتج</string>
+    <string name="back">رجوع</string>
+    <string name="price_egp">%1$,d ج.م</string>
+    <string name="old_price_egp">%1$,d ج.م</string>
+    <string name="review_rating">التقييم (%1$.1f)</string>
+    <string name="rating_with_count">%1$.1f (%2$,d)</string>
+    <string name="sold_count">تم بيع %1$,d</string>
+    <string name="description">الوصف</string>
+    <string name="read_more">اقرأ المزيد</string>
+    <string name="read_less">عرض أقل</string>
+    <string name="increase_quantity">زيادة الكمية</string>
+    <string name="decrease_quantity">تقليل الكمية</string>
+    <string name="total_price">السعر الإجمالي</string>
+    <string name="add_to_cart">أضف إلى السلة</string>
+    <string name="cart_coming_soon">الإضافة إلى السلة قريبًا</string>
 </resources>

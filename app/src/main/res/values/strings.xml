@@ -7,4 +7,21 @@
     <string name="generic_error_message">Something Went wrong</string>
     <string name="try_again">Try Again</string>
     <string name="no_sub_categories">No subcategories yet</string>
+    <string name="no_products">No products here yet</string>
+    <string name="product_details">Product Details</string>
+    <string name="back">Back</string>
+    <string name="price_egp">EGP %1$,d</string>
+    <string name="old_price_egp">%1$,d EGP</string>
+    <string name="review_rating">Review (%1$.1f)</string>
+    <string name="rating_with_count">%1$.1f (%2$,d)</string>
+    <string name="sold_count">%1$,d Sold</string>
+    <string name="description">Description</string>
+    <string name="read_more">Read More</string>
+    <string name="read_less">Read Less</string>
+    <string name="increase_quantity">Increase quantity</string>
+    <string name="decrease_quantity">Decrease quantity</string>
+    <string name="quantity_count" translatable="false">%1$d</string>
+    <string name="total_price">Total price</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="cart_coming_soon">Adding to the cart is coming soon</string>
 </resources>

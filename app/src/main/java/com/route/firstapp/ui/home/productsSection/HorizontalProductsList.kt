@@ -1,9 +1,11 @@
 package com.route.firstapp.ui.home.productsSection
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -15,6 +17,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
@@ -89,10 +92,13 @@ fun ProductsSuccessState(modifier: Modifier = Modifier,
         modifier = modifier.fillMaxWidth(),
         title = stringResource(R.string.most_purshable)
     )
-    LazyRow(modifier = modifier,) {
+    LazyRow(modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
         items(products.size){ index->
             ProductCard(
-                products[index],
+                modifier = Modifier.width(160.dp),
+                product = products[index],
                 onProductClick = onProductClick,
             )
         }

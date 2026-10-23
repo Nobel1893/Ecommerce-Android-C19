@@ -16,4 +16,20 @@ class ProductsRepoImpl @Inject constructor(
            sort = sort,
        )
     }
+
+    override fun getSubCategoryProducts(
+        categoryId: String,
+        subCategoryId: String,
+    ): Flow<Resource<List<Product>?>> {
+        return productsOnlineDataSource.getSubCategoryProducts(
+            categoryId = categoryId,
+            subCategoryId = subCategoryId,
+        )
+    }
+
+    override fun getProductDetails(productId: String): Flow<Resource<Product?>> {
+        return productsOnlineDataSource.getProductDetails(
+            productId = productId,
+        )
+    }
 }
