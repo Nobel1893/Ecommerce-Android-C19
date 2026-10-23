@@ -1,6 +1,7 @@
 package com.route.firstapp.ui.home.productsSection
 
 import androidx.lifecycle.viewModelScope
+import com.route.domain.data.Product
 import com.route.domain.data.ProductsSort
 import com.route.domain.data.Resource
 import com.route.domain.usecase.GetProductsUseCase
@@ -32,8 +33,22 @@ class ProductsViewModel @Inject constructor(
             is ProductsSectionContract.Intent.Init -> loadProducts(
                 sort = intent.sort,
             )
+            is ProductsSectionContract.Intent.ProductClicked -> {
+                handleProductClick(product = intent.product)
+            }
         }
-
+    }
+    private fun handleProductClick(product: Product){
+        // track product Clicked
+        product.id?.let { productId ->
+            viewModelScope.launch {
+                _events.send(
+                    ProductsSectionContract.Event.NavigateToProductDetails(
+                        productId = product.id
+                    )
+                )
+            }
+        }
     }
 
     private fun loadProducts(

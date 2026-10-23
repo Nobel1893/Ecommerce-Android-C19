@@ -5,4 +5,5 @@
     <string name="cateogries">Categories</string>
     <string name="most_purshable">Most Purchasable</string>
     <string name="generic_error_message">Something Went wrong</string>
+    <string name="no_sub_categories">لا توجد أقسام فرعية بعد</string>
 </resources>

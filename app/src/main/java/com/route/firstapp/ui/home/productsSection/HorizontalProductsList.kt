@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.route.domain.data.Product
 import com.route.domain.data.ProductsSort
 import com.route.firstapp.R
+import com.route.firstapp.ui.AppRoutes
 import com.route.firstapp.ui.ProductCard
 import com.route.firstapp.ui.home.HomeSectionTitle
 
@@ -30,7 +31,9 @@ fun HorizontalProductCardRow(modifier: Modifier = Modifier,
                              sort: ProductsSort,
                              viewModel: ProductsViewModel = hiltViewModel(
                                  key = sort.name
-                             )) {
+                             ),
+                             onNavigate:(AppRoutes)-> Unit,
+                             ) {
 
     LifecycleEventEffect(event = Lifecycle.Event.ON_CREATE) {
         Log.e("Horinontal Products Card", sort.name)
@@ -38,8 +41,15 @@ fun HorizontalProductCardRow(modifier: Modifier = Modifier,
             ProductsSectionContract.Intent.Init(sort = sort)
         )
     }
+    val event = viewModel.events.collectAsStateWithLifecycle(null).value
     val states = viewModel.states.collectAsStateWithLifecycle()
 
+    when(event){
+        is ProductsSectionContract.Event.NavigateToProductDetails -> {
+            onNavigate(AppRoutes.ProductDetails(productId = event.productId))
+        }
+        else -> {}
+    }
 
     when (val state  = states.value) {
         is ProductsSectionContract.State.Error -> {
@@ -58,6 +68,9 @@ fun HorizontalProductCardRow(modifier: Modifier = Modifier,
         }
         is ProductsSectionContract.State.Success -> ProductsSuccessState(
             products = state.products,
+            onProductClick = {product ->
+                viewModel.doIntent(ProductsSectionContract.Intent.ProductClicked(product))
+            }
         )
     }
 
@@ -65,7 +78,8 @@ fun HorizontalProductCardRow(modifier: Modifier = Modifier,
 
 @Composable
 fun ProductsSuccessState(modifier: Modifier = Modifier,
-                         products: List<Product>
+                         products: List<Product>,
+                         onProductClick:(product: Product)-> Unit = {}
                          ) {
     HomeSectionTitle(
         modifier = modifier.fillMaxWidth(),
@@ -74,7 +88,8 @@ fun ProductsSuccessState(modifier: Modifier = Modifier,
     LazyRow(modifier = modifier,) {
         items(products.size){ index->
             ProductCard(
-                products[index]
+                products[index],
+                onProductClick = onProductClick,
             )
         }
     }
