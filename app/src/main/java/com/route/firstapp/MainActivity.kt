@@ -1,54 +1,46 @@
 package com.route.firstapp
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Icon
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.route.firstapp.ui.AppRoutes
+import com.route.firstapp.ui.home.CategoriesTab
+import com.route.firstapp.ui.home.FavoritesTab
 import com.route.firstapp.ui.home.HomeScreen
-
+import com.route.firstapp.ui.home.HomeTab
+import com.route.firstapp.ui.home.HomeTabs
+import com.route.firstapp.ui.home.ProfileTab
+import com.route.firstapp.ui.productDetails.ProductDetailsScreen
+import com.route.firstapp.ui.productsCatalog.ProductsCatalogScreen
 import com.route.firstapp.ui.theme.FirstAppTheme
-import com.route.firstapp.ui.theme.MyPreview
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.max
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -56,27 +48,57 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FirstAppTheme {
-                HomeScreen()
-            }
+            RouteEcommerceApp()
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun RouteEcommerceApp(){
+    // 1. Create and remember the NavController
+    val navController = rememberNavController()
+
+    FirstAppTheme {
+        Scaffold(
+            contentColor = Color.White
+        ){ _ ->
+            AppNavHost(
+                navController = navController,
+                startDestination = AppRoutes.Home
+            )
+        }
+    }
+
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    FirstAppTheme {
-        Greeting("Android")
+fun AppNavHost(modifier: Modifier = Modifier,
+               navController: NavHostController,
+               startDestination: AppRoutes
+               ) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+    ) {
+        composable<AppRoutes.Home> {
+            HomeScreen(
+                appNavController = navController,
+            )
+        }
+        composable<AppRoutes.ProductDetails> {
+            ProductDetailsScreen()
+        }
+        composable<AppRoutes.ProductsCatalog> { backStackEntry ->
+            val route = backStackEntry.toRoute<AppRoutes.ProductsCatalog>()
+            ProductsCatalogScreen(
+                categoryId = route.categoryId,
+                subCategoryId = route.subCategoryId,
+            )
+        }
+
     }
+
 }
 
 

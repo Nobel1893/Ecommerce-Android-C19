@@ -24,8 +24,9 @@ interface ProductsSectionContract {
     }
     sealed class Intent{
         data class Init(val sort: ProductsSort): Intent()
-
+        data class ProductClicked(val product: Product): Intent()
     }
     sealed class Event{
+        data class NavigateToProductDetails(val productId: String): Event()
     }
 }

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21" // Match your Kotlin version
 
 }
 
@@ -66,6 +67,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+
+    // Navigation Deps
+    implementation(libs.androidx.navigation.compose) // Use the latest stable version
+    implementation(libs.kotlinx.serialization.json) // Required for type-safe routing
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.compose.material.icons.core)
