@@ -32,7 +32,8 @@ calls, or large parsing on `Dispatchers.Main`.
 - When the new state depends on the current one, write it with `_states.update { }` so concurrent
   updates aren't lost.
 - One-shot events use `Channel` + `receiveAsFlow()` initialised once. A getter that calls
-  `receiveAsFlow()` on every access (`ProductsViewModel.events`) creates a new flow each time.
+  `receiveAsFlow()` or `asStateFlow()` on every access creates a new flow each time, so a collector
+  keyed on the flow restarts on every recomposition.
 
 ## Compose
 

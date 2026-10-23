@@ -271,10 +271,6 @@ new code.
 Don't copy these into new code. Fix them only when your task touches them.
 
 - `HomeCategoriesErrorState` text has no color, so it's invisible under the Scaffold's white content color.
-- **Events handled in the composition body.** `HorizontalProductsList.kt` reads
-  `events.collectAsStateWithLifecycle(null).value` and reacts inside the composable body, so the last
-  event is kept as state and re‑handled on recomposition. New code collects events in
-  `LaunchedEffect(viewModel) { viewModel.events.collect { ... } }`.
 - **Retry button does nothing.** The products error state's "Try Again" has an empty `onClick`.
   Wire retry to an `Intent`.
 - **Hard‑coded section title.** `ProductsSuccessState` always shows `R.string.most_purshable`, so

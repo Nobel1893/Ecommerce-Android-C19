@@ -6,6 +6,7 @@ import com.route.domain.data.ProductsSort
 import com.route.domain.data.Resource
 import com.route.domain.usecase.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,18 +22,23 @@ class ProductsViewModel @Inject constructor(
 ) : ProductsSectionContract.ViewModel(){
 
     private val _events = Channel<ProductsSectionContract.Event>(Channel.BUFFERED)
-    override val events: Flow<ProductsSectionContract.Event>
-        get() = _events.receiveAsFlow()
+    // created once: a getter would hand out a new flow on every recomposition and restart its collector
+    override val events: Flow<ProductsSectionContract.Event> = _events.receiveAsFlow()
 
     private val _states = MutableStateFlow<ProductsSectionContract.State>(ProductsSectionContract.State.Loading)
-    override val states: StateFlow<ProductsSectionContract.State>
-        get() = _states.asStateFlow()
+    override val states: StateFlow<ProductsSectionContract.State> = _states.asStateFlow()
+
+    private var productsJob: Job? = null
 
     override fun doIntent(intent: ProductsSectionContract.Intent) {
         when (intent) {
-            is ProductsSectionContract.Intent.Init -> loadProducts(
-                sort = intent.sort,
-            )
+            is ProductsSectionContract.Intent.Init -> {
+                // Init is sent again whenever HomeTab comes back into composition (tab switch, Back,
+                // rotation), keep products that are already loaded or still loading
+                val isLoadedOrLoading = _states.value is ProductsSectionContract.State.Success ||
+                        productsJob?.isActive == true
+                if (!isLoadedOrLoading) loadProducts(sort = intent.sort)
+            }
             is ProductsSectionContract.Intent.ProductClicked -> {
                 handleProductClick(product = intent.product)
             }
@@ -54,7 +60,7 @@ class ProductsViewModel @Inject constructor(
     private fun loadProducts(
         sort: ProductsSort
     ){
-        viewModelScope.launch {
+        productsJob = viewModelScope.launch {
             getProductsUseCase.getSortedProducts(sort = sort)
                 .collect { resource ->
                     when (resource) {

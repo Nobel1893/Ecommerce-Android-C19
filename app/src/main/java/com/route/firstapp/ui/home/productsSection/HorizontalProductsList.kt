@@ -9,6 +9,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
@@ -41,15 +42,18 @@ fun HorizontalProductCardRow(modifier: Modifier = Modifier,
             ProductsSectionContract.Intent.Init(sort = sort)
         )
     }
-    val event = viewModel.events.collectAsStateWithLifecycle(null).value
-    val states = viewModel.states.collectAsStateWithLifecycle()
-
-    when(event){
-        is ProductsSectionContract.Event.NavigateToProductDetails -> {
-            onNavigate(AppRoutes.ProductDetails(productId = event.productId))
+    // one-shot events are handled in an effect, not the composition body, so a recomposition
+    // can't navigate again
+    LaunchedEffect(viewModel) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is ProductsSectionContract.Event.NavigateToProductDetails -> {
+                    onNavigate(AppRoutes.ProductDetails(productId = event.productId))
+                }
+            }
         }
-        else -> {}
     }
+    val states = viewModel.states.collectAsStateWithLifecycle()
 
     when (val state  = states.value) {
         is ProductsSectionContract.State.Error -> {

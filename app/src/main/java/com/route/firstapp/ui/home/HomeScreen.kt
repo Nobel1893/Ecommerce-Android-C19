@@ -39,6 +39,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -73,6 +75,8 @@ fun HomeScreen(modifier: Modifier = Modifier,
                appNavController: NavController,
                ) {
     val navController = rememberNavController()
+    // Home's own back stack entry in AppNavHost, it stops being RESUMED once a navigation starts
+    val lifecycleOwner = LocalLifecycleOwner.current
     // read the selected tab from the back stack so it stays right after system back
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     Scaffold(
@@ -119,8 +123,11 @@ fun HomeScreen(modifier: Modifier = Modifier,
             navController = navController,
             startDestination = AppRoutes.HomeTab,
             onNavigate = { destination ->
-                // full-screen destinations live in AppNavHost, so use the root controller
-                appNavController.navigate(destination)
+                // full-screen destinations live in AppNavHost, so use the root controller.
+                // A second tap during the transition would push the destination twice.
+                if (lifecycleOwner.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                    appNavController.navigate(destination)
+                }
             },
         )
     }

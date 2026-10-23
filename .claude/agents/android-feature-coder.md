@@ -426,7 +426,7 @@ Rules:
   unselected, empty and filled). Only the `hiltViewModel()` entry composable is exempt.
 - The entry composable is the only one that touches the ViewModel. Children get data and lambdas.
 - Collect events in `LaunchedEffect`, **not** with `collectAsStateWithLifecycle(null).value` in the
-  body. The reference file does the latter, and it re‑handles the last event on every recomposition.
+  body: that keeps the last event as state and handles it again on every recomposition.
 - Wire every retry button to an `Intent`. Never leave `onClick = {}`.
 - Reuse what exists: `HomeSectionTitle` (`ui/home/HomeSction.kt`), `ProductCard` (`ui/CommonWidgets.kt`),
   `BrandColor`, `MaterialTheme.typography`, `MyPreview`. `HomeCategoriesLoading` is a reusable
