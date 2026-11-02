@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Route" wordmark from the Figma sign in / sign up frames.
+     The "o" was an SVG mask (inside-only stroke), which VectorDrawable can't draw,
+     so it is an ellipse inset by half the stroke width instead. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="239.772dp"
+    android:height="74.5389dp"
+    android:viewportWidth="239.772"
+    android:viewportHeight="74.5389">
+    <!-- R -->
+    <path
+        android:pathData="M1.3858,63.5886V51.631H28.8882V3.00354C28.8882,3.00354 44.432,-0.63571 53.202,3.00354C58.7516,5.30644 62.4279,7.33408 65.5581,12.171C73.2964,24.1286 69.923,35.3379 60.3765,42.8621C51.5745,49.7996 31.6783,42.8621 31.6783,42.8621"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M40.4472,45.2537L58.4756,72.3575L71.9355,58.8056"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+    <!-- o: center (95.0535, 47.2466), rx 18.1448, ry 23.7251 -->
+    <path
+        android:pathData="M113.1983,47.2466A18.1448,23.7251 0,1 1,76.9087 47.2466A18.1448,23.7251 0,1 1,113.1983 47.2466Z"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF" />
+    <!-- u -->
+    <path
+        android:pathData="M120.873,23.7301C120.873,23.7301 119.279,45.2537 120.873,55.6169C122.467,65.9802 128.047,69.5675 130.439,70.7632C132.83,71.959 143.193,73.9519 148.375,70.7632C153.557,67.5745 156.347,63.5887 157.941,55.6169C159.536,47.6452 157.941,23.7301 157.941,23.7301"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+    <!-- t -->
+    <path
+        android:pathData="M164.983,1.40923C164.983,1.40923 164.585,58.407 164.983,60.7985C165.382,63.1901 170.165,67.5745 171.759,68.7703C173.353,69.966 176.885,72.0144 180.528,71.959C184.026,71.9058 186.072,70.8317 188.898,68.7703C192.042,66.4769 193.485,64.4324 194.877,60.7985C195.729,58.5751 196.004,57.1999 196.073,54.8198"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M166.002,24.5272H196.693"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+    <!-- e -->
+    <path
+        android:pathData="M238.384,56.2589C238.384,56.2589 236.073,63.3908 232.804,66.6221C229.879,69.5131 227.682,71.0656 223.636,71.8037C219.933,72.4794 217.552,72.0414 214.07,70.608C211.475,69.5395 210.102,68.58 208.091,66.6221C204.799,63.4151 203.766,60.6808 202.511,56.2589C201.528,52.7951 201.529,47.0914 201.529,47.0914M201.529,47.0914C201.529,47.0914 201.41,44.6763 201.529,43.9027C202.511,37.5253 207.294,30.7494 207.294,30.7494C207.294,30.7494 210.084,26.6981 214.07,25.5677C216.916,24.7609 220.739,24.1755 223.636,24.7706C227.592,25.5831 229.827,26.8254 232.804,29.5536C234.797,31.3798 236.548,33.9999 237.587,37.9239C238.463,41.2344 238.384,47.0914 238.384,47.0914H201.529Z"
+        android:strokeWidth="2.7716"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+</vector>

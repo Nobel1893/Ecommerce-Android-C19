@@ -1,6 +1,8 @@
 package com.route.api
 
 import android.util.Log
+import com.google.gson.Gson
+import com.route.firstapp.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +23,11 @@ class ApiModule {
     @Singleton
     fun provideOkHttpLoggingInterceptor(): HttpLoggingInterceptor{
         val interceptor =  HttpLoggingInterceptor { message -> Log.e("RetroFit", message) }
-        interceptor.setLevel(level = HttpLoggingInterceptor.Level.BODY)
+        // bodies now carry passwords and tokens (v1/auth/*), so they're only logged in debug builds
+        interceptor.setLevel(
+            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.NONE
+        )
         return interceptor
     }
 
@@ -39,14 +45,21 @@ class ApiModule {
 
     }
 
+    // shared by Retrofit's converter and the error-body parsing in safeApiCallWithoutEnvelope
+    @Provides
+    @Singleton
+    fun provideGson(): Gson{
+        return Gson()
+    }
+
     @Singleton
     @Provides
-    fun provideRetrofit(okHttp: OkHttpClient): Retrofit{
+    fun provideRetrofit(okHttp: OkHttpClient, gson: Gson): Retrofit{
         val retrofit = Retrofit.Builder()
             .client(okHttp)
             .baseUrl("https://ecommerce.routemisr.com/api/")
             .addConverterFactory(
-                GsonConverterFactory.create()
+                GsonConverterFactory.create(gson)
             ).build()
         return retrofit
     }

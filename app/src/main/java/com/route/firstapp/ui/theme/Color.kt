@@ -23,3 +23,7 @@ val BrandBorderColor = BrandColor.copy(alpha = 0.3f)
 val OldPriceColor = BrandColor.copy(alpha = 0.6f)
 // highlight behind selected text in text fields
 val BrandSelectionColor = BrandColor.copy(alpha = 0.3f)
+
+// Auth screens (Figma sign in / sign up), drawn on BrandColor in light and dark mode
+val AuthPlaceholderColor = Color(0xB3000000) // black at 70%
+val AuthErrorColor = Color(0xFFFFB4AB) // light red that stays readable on BrandColor
