@@ -10,12 +10,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,6 +43,8 @@ import com.route.domain.data.Product
 import com.route.firstapp.R
 import com.route.firstapp.ui.theme.BrandBorderColor
 import com.route.firstapp.ui.theme.BrandColor
+import com.route.firstapp.ui.theme.BrandSecondaryTextColor
+import com.route.firstapp.ui.theme.BrandSelectionColor
 import com.route.firstapp.ui.theme.BrandTextColor
 import com.route.firstapp.ui.theme.MyPreview
 import com.route.firstapp.ui.theme.OldPriceColor
@@ -167,6 +176,63 @@ fun ProductFavoriteIcon(modifier: Modifier = Modifier) {
     }
 }
 
+// the search field and cart icon at the top of Home and the products catalog. Search isn't wired yet
+@Composable
+fun AppSearchBar(modifier: Modifier = Modifier,
+                 state: TextFieldState = rememberTextFieldState(),
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(26.dp),
+    ) {
+        OutlinedTextField(
+            // Figma's 50dp at the default font size, taller rather than clipped at larger ones
+            modifier = Modifier
+                .weight(1f)
+                .heightIn(min = 50.dp),
+            state = state,
+            lineLimits = TextFieldLineLimits.SingleLine,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(color = BrandColor),
+            placeholder = {
+                Text(
+                    stringResource(R.string.search_hint),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium.copy(color = BrandSecondaryTextColor),
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(R.drawable.ic_search),
+                    tint = BrandColor,
+                    // the placeholder already says what the field is for
+                    contentDescription = null,
+                )
+            },
+            shape = RoundedCornerShape(size = 25.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = BrandColor,
+                unfocusedBorderColor = BrandColor,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                cursorColor = BrandColor,
+                selectionColors = TextSelectionColors(
+                    handleColor = BrandColor,
+                    backgroundColor = BrandSelectionColor,
+                ),
+            ),
+        )
+        Icon(
+            modifier = Modifier.size(24.dp),
+            painter = painterResource(R.drawable.ic_cart),
+            tint = BrandColor,
+            contentDescription = stringResource(R.string.cart),
+        )
+    }
+}
+
 private val previewProduct = Product(
     id = "6428ebc6dc1175abc65ca0b9",
     name = "Woman Shawl",
@@ -235,6 +301,37 @@ private fun ProductFavoriteIconPreview(){
     MyPreview {
         ProductFavoriteIcon(
             modifier = Modifier.padding(8.dp),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun AppSearchBarPreview(){
+    MyPreview {
+        AppSearchBar(
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun AppSearchBarFilledPreview(){
+    MyPreview {
+        AppSearchBar(
+            modifier = Modifier.padding(16.dp),
+            state = rememberTextFieldState(initialText = "Woman Shawl"),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true, fontScale = 1.3f)
+private fun AppSearchBarLargeFontPreview(){
+    MyPreview {
+        AppSearchBar(
+            modifier = Modifier.padding(16.dp),
         )
     }
 }

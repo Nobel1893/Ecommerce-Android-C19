@@ -21,3 +21,5 @@ val BrandSecondaryTextColor = BrandTextColor.copy(alpha = 0.6f)
 val BrandBorderColor = BrandColor.copy(alpha = 0.3f)
 // struck-through price before the discount
 val OldPriceColor = BrandColor.copy(alpha = 0.6f)
+// highlight behind selected text in text fields
+val BrandSelectionColor = BrandColor.copy(alpha = 0.3f)
