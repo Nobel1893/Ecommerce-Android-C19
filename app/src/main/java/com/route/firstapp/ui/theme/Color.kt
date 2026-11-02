@@ -13,6 +13,17 @@ val Pink40 = Color(0xFF7D5260)
 
 val BrandColor = Color(0xFF004182)
 
+// Figma "text color": product names, prices and screen titles
+val BrandTextColor = Color(0xFF06004F)
+// descriptions and secondary labels
+val BrandSecondaryTextColor = BrandTextColor.copy(alpha = 0.6f)
+// card, image and chip borders
+val BrandBorderColor = BrandColor.copy(alpha = 0.3f)
+// struck-through price before the discount
+val OldPriceColor = BrandColor.copy(alpha = 0.6f)
+// highlight behind selected text in text fields
+val BrandSelectionColor = BrandColor.copy(alpha = 0.3f)
+
 // Auth screens (Figma sign in / sign up), drawn on BrandColor in light and dark mode
 val AuthPlaceholderColor = Color(0xB3000000) // black at 70%
 val AuthErrorColor = Color(0xFFFFB4AB) // light red that stays readable on BrandColor

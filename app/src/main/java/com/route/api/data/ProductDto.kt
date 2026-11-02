@@ -27,13 +27,16 @@ data class ProductDto(
 	val ratingsQuantity: Int? = null,
 
 	@field:SerializedName("ratingsAverage")
-	val ratingsAverage: Any? = null,
+	val ratingsAverage: Double? = null,
 
 	@field:SerializedName("createdAt")
 	val createdAt: String? = null,
 
 	@field:SerializedName("price")
 	val price: Int? = null,
+
+	@field:SerializedName("priceAfterDiscount")
+	val priceAfterDiscount: Int? = null,
 
 	@field:SerializedName("_id")
 	val id: String? = null,
@@ -53,11 +56,22 @@ data class ProductDto(
 	@field:SerializedName("updatedAt")
 	val updatedAt: String? = null
 ){
-	fun toProduct(): Product{
+	// null when the API leaves out the id: the app can't open that product or key it in a list
+	fun toProduct(): Product?{
+		if (id == null) return null
 		return Product(
 			id = id,
 			name = title,
 			imageUrl = imageCover,
+			description = description,
+			price = price,
+			// the API sends 0 (or leaves the field out) when there's no discount
+			priceAfterDiscount = priceAfterDiscount?.takeIf { discountedPrice -> discountedPrice > 0 },
+			ratingsAverage = ratingsAverage,
+			ratingsQuantity = ratingsQuantity,
+			soldCount = sold,
+			availableQuantity = quantity,
+			images = images?.filterNotNull() ?: listOf(),
 		)
 	}
 }

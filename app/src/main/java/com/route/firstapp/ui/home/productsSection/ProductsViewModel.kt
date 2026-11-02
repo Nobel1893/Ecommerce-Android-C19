@@ -46,14 +46,12 @@ class ProductsViewModel @Inject constructor(
     }
     private fun handleProductClick(product: Product){
         // track product Clicked
-        product.id?.let { productId ->
-            viewModelScope.launch {
-                _events.send(
-                    ProductsSectionContract.Event.NavigateToProductDetails(
-                        productId = product.id
-                    )
+        viewModelScope.launch {
+            _events.send(
+                ProductsSectionContract.Event.NavigateToProductDetails(
+                    productId = product.id
                 )
-            }
+            )
         }
     }
 
