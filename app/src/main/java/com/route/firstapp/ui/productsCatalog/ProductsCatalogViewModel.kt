@@ -69,9 +69,8 @@ class ProductsCatalogViewModel @Inject constructor(
     }
 
     private fun handleProductClick(product: Product){
-        val productId = product.id ?: return
         viewModelScope.launch {
-            _events.send(ProductsCatalogContract.Event.NavigateToProductDetails(productId = productId))
+            _events.send(ProductsCatalogContract.Event.NavigateToProductDetails(productId = product.id))
         }
     }
 }

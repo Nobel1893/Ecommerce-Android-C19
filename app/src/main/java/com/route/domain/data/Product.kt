@@ -1,7 +1,7 @@
 package com.route.domain.data
 
 data class Product(
-    val id: String? = null,
+    val id: String,
     val name:String? = null,
     val imageUrl:String? = null,
     val description: String? = null,

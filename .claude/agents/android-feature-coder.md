@@ -430,7 +430,8 @@ Rules:
 - Wire every retry button to an `Intent`. Never leave `onClick = {}`.
 - Reuse what exists: `HomeSectionTitle` (`ui/home/HomeSction.kt`), `ProductCard` (`ui/CommonWidgets.kt`),
   `BrandColor`, `MaterialTheme.typography`, `MyPreview`. `HomeCategoriesLoading` is a reusable
-  spinner. Don't reuse `HomeCategoriesErrorState`: its text has no color, so it's invisible inside the
+  spinner. For a screen, use `FullScreenLoading()` and `ErrorWithRetry(onRetryClick)` from
+  `ui/CommonWidgets.kt` instead of writing `XxxLoadingState` / `XxxErrorState` files. Don't reuse `HomeCategoriesErrorState`: its text has no color, so it's invisible inside the
   home Scaffold.
 - Image loading uses `GlideImage` with `@OptIn(ExperimentalGlideComposeApi::class)`.
 - Put the section in its parent screen (for a home section, inside `HomeTab` in `HomeScreen.kt`)

@@ -15,10 +15,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.route.firstapp.R
+import com.route.firstapp.ui.ErrorWithRetry
+import com.route.firstapp.ui.FullScreenLoading
 
-// Entry composable only. It has no preview because it needs a Hilt ViewModel; the top bar and
-// each state have their own file and previews (ProductDetailsTopBar, ProductDetailsLoadingState,
-// ProductDetailsErrorState, ProductDetailsSuccessState).
+// Entry composable only. It has no preview because it needs a Hilt ViewModel; the top bar and the
+// success state have their own file and previews (ProductDetailsTopBar, ProductDetailsSuccessState),
+// loading and error use the shared FullScreenLoading and ErrorWithRetry.
 @Composable
 fun ProductDetailsScreen(modifier: Modifier = Modifier,
                          productId: String,
@@ -53,10 +55,10 @@ fun ProductDetailsScreen(modifier: Modifier = Modifier,
             onBackClick = { viewModel.doIntent(ProductDetailsContract.Intent.BackClicked) },
         )
         when (val state = states.value) {
-            ProductDetailsContract.State.Loading -> ProductDetailsLoadingState(
+            ProductDetailsContract.State.Loading -> FullScreenLoading(
                 modifier = Modifier.weight(1f),
             )
-            is ProductDetailsContract.State.Error -> ProductDetailsErrorState(
+            is ProductDetailsContract.State.Error -> ErrorWithRetry(
                 modifier = Modifier.padding(16.dp),
                 onRetryClick = {
                     viewModel.doIntent(ProductDetailsContract.Intent.Init(productId = productId))

@@ -65,7 +65,9 @@ parameter declared as plain `val` shows up here too, and is a finding.
 - [ ] Events are not read with `collectAsState(...).value` / `collectAsStateWithLifecycle(null).value`
       in the composable body: the last event is kept as state and handled again on recomposition.
 - [ ] One file per UI state: `XxxLoadingState.kt`, `XxxErrorState.kt`, `XxxSuccessState.kt`, and the
-      same for nested states. Child composables live in the file of the state that uses them.
+      same for nested states. Child composables live in the file of the state that uses them. A state
+      that only calls a shared composable (`FullScreenLoading`, `ErrorWithRetry` in `ui/CommonWidgets.kt`)
+      needs no file of its own.
 - [ ] State composables are stateless: data and lambdas in, no ViewModel parameter.
 - [ ] Every composable except the `hiltViewModel()` entry has a `private` `@Preview` function named
       `<Composable>Preview`, wrapped in `MyPreview { }`, with one preview per meaningful variant.
