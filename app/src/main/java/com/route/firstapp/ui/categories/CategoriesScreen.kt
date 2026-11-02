@@ -10,9 +10,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.route.firstapp.ui.AppRoutes
+import com.route.firstapp.ui.ErrorWithRetry
+import com.route.firstapp.ui.FullScreenLoading
 
-// Entry composable only. It has no preview because it needs a Hilt ViewModel;
-// each state has its own file and previews (CategoriesLoadingState, CategoriesErrorState, CategoriesSuccessState).
+// Entry composable only. It has no preview because it needs a Hilt ViewModel; the success state has
+// its own file and previews (CategoriesSuccessState), loading and error use the shared
+// FullScreenLoading and ErrorWithRetry.
 @Composable
 fun CategoriesScreen(modifier: Modifier = Modifier,
                      viewModel: CategoriesViewModel = hiltViewModel(),
@@ -36,10 +39,10 @@ fun CategoriesScreen(modifier: Modifier = Modifier,
     val states = viewModel.states.collectAsStateWithLifecycle()
 
     when (val state = states.value) {
-        CategoriesContract.State.Loading -> CategoriesLoadingState(
+        CategoriesContract.State.Loading -> FullScreenLoading(
             modifier = modifier,
         )
-        is CategoriesContract.State.Error -> CategoriesErrorState(
+        is CategoriesContract.State.Error -> ErrorWithRetry(
             modifier = modifier.padding(16.dp),
             onRetryClick = { viewModel.doIntent(CategoriesContract.Intent.Init) },
         )

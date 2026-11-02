@@ -20,7 +20,35 @@ class ProductsOnlineDataSourceImpl @Inject constructor(
                 apiServices.getProducts(sort = sort.toProductsSortDto())
             },
             converter = { dtos ->
-                dtos?.map { dto -> dto.toProduct() }?:listOf()
+                dtos?.mapNotNull { dto -> dto.toProduct() }?:listOf()
+            }
+        )
+    }
+
+    override fun getSubCategoryProducts(
+        categoryId: String,
+        subCategoryId: String,
+    ): Flow<Resource<List<Product>?>> {
+        return safeApiCallV2(
+            api = {
+                apiServices.getSubCategoryProducts(
+                    categoryId = categoryId,
+                    subCategoryId = subCategoryId,
+                )
+            },
+            converter = { dtos ->
+                dtos?.mapNotNull { dto -> dto.toProduct() }?:listOf()
+            }
+        )
+    }
+
+    override fun getProductDetails(productId: String): Flow<Resource<Product?>> {
+        return safeApiCallV2(
+            api = {
+                apiServices.getProductDetails(productId = productId)
+            },
+            converter = { dto ->
+                dto?.toProduct()
             }
         )
     }
